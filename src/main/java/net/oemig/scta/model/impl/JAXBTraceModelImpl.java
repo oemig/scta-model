@@ -6,6 +6,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.xml.bind.JAXB;
 
+import net.oemig.scta.model.IRun;
+import net.oemig.scta.model.ISession;
+import net.oemig.scta.model.ITrace;
 import net.oemig.scta.model.ITraceModel;
 import net.oemig.scta.model.binding.ObjectFactory;
 import net.oemig.scta.model.binding.Trace;
@@ -55,22 +58,22 @@ public class JAXBTraceModelImpl implements ITraceModel {
 		try{
 			//try to find trace file
 			File traceFile=new File(traceFileDirectory+File.separator+TRACE_FILE_PREFIX+traceName+".xml");
-			setCurrentTrace(JAXB.unmarshal(traceFile, Trace.class));
+			currentTrace=JAXB.unmarshal(traceFile, Trace.class);
 		}catch(Exception e){
 			//not found.. create a new one
-			setCurrentTrace(this.objectFactory.createTrace());
-			getCurrentTrace().setName(traceName);
+			currentTrace=this.objectFactory.createTrace();
+			currentTrace.setName(traceName);
 		}
 
 		String sessionName = JOptionPane
 				.showInputDialog("Please enter a session name!");
 
-		setCurrentSession(this.objectFactory.createTraceSession());
-		getCurrentSession().setName(sessionName);
-		getCurrentTrace().getSession().add(getCurrentSession());
+		currentSession=this.objectFactory.createTraceSession();
+		currentSession.setName(sessionName);
+		currentTrace.getSession().add(currentSession);
 
-		setCurrentRun(this.objectFactory.createTraceSessionRun());
-		getCurrentSession().getRun().add(getCurrentRun());
+		currentRun=this.objectFactory.createTraceSessionRun();
+		currentSession.getRun().add(currentRun);
 
 	}
 
@@ -78,31 +81,21 @@ public class JAXBTraceModelImpl implements ITraceModel {
 	 * @see net.oemig.scta.tracer.model.ITraceModel#getCurrentTrace()
 	 */
 	@Override
-	public Trace getCurrentTrace() {
-		return currentTrace;
-	}
-
-	private void setCurrentTrace(Trace currentTrace) {
-		this.currentTrace = currentTrace;
+	public ITrace getCurrentTrace() {
+		return JAXBTraceImpl.of(currentTrace);
 	}
 
 	@Override
-	public Session getCurrentSession() {
-		return currentSession;
+	public ISession getCurrentSession() {
+		return JAXBSessionImpl.of(currentSession);
 	}
 
-	private void setCurrentSession(Session currentSession) {
-		this.currentSession = currentSession;
-	}
 
 	@Override
-	public Run getCurrentRun() {
-		return currentRun;
+	public IRun getCurrentRun() {
+		return JAXBRunImpl.of(currentRun);
 	}
 
-	private void setCurrentRun(Run currentRun) {
-		this.currentRun = currentRun;
-	}
 
 	@Override
 	public void addParticipant(final UserName name, final ExperiementId experimentId) {
@@ -110,7 +103,7 @@ public class JAXBTraceModelImpl implements ITraceModel {
 				.createTraceSessionRunParticipant();
 		participant.setName(name.toString());
 		participant.setExperimentId(experimentId.toString());
-		getCurrentRun().getParticipant().add(participant);
+		currentRun.getParticipant().add(participant);
 	}
 
 	@Override
@@ -123,7 +116,7 @@ public class JAXBTraceModelImpl implements ITraceModel {
 		countData.setLetter(letter);
 		countData.setQuantity(quantity);
 
-		getCurrentRun().getCountData().add(countData);
+		currentRun.getCountData().add(countData);
 
 	}
 
@@ -140,7 +133,7 @@ public class JAXBTraceModelImpl implements ITraceModel {
 		responseData.setResponsetime(new Integer(responseTime));
 		responseData.setQuestionType(questionType.name());
 
-		getCurrentRun().getResponseData().add(responseData);
+		currentRun.getResponseData().add(responseData);
 
 	}
 
@@ -150,7 +143,7 @@ public class JAXBTraceModelImpl implements ITraceModel {
 		fc.setDialogType(JFileChooser.SAVE_DIALOG);
 		int state=fc.showSaveDialog(null);
 		if(JFileChooser.APPROVE_OPTION==state){
-			JAXB.marshal(getCurrentTrace(), fc.getSelectedFile());
+			JAXB.marshal(currentTrace, fc.getSelectedFile());
 		}
 		
 				

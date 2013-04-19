@@ -45,10 +45,16 @@
 							</xs:element>
 						</xs:sequence>
 						<xs:attribute name="Name" type="xs:string"/>
+						<xs:attribute name="ResearcherName" type="xs:string"/>
+						<xs:attribute name="ResearchProjectName" type="xs:string"/>
+						<xs:attribute name="Publication" type="xs:string"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
 			<xs:attribute name="Name" type="xs:string"/>
+			<xs:attribute name="ResearcherName" type="xs:string"/>
+			<xs:attribute name="ResearchProjectName" type="xs:string"/>
+			<xs:attribute name="Publication" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 </xs:schema>

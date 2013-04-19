@@ -1,21 +1,18 @@
 package net.oemig.scta.model;
 
-import net.oemig.scta.model.binding.Trace;
-import net.oemig.scta.model.binding.Trace.Session;
-import net.oemig.scta.model.binding.Trace.Session.Run;
 import net.oemig.scta.model.data.ExperiementId;
 import net.oemig.scta.model.data.QuestionType;
 import net.oemig.scta.model.data.UserName;
 
 public interface ITraceModel {
 
-	public Trace getCurrentTrace();
+	public ITrace getCurrentTrace();
 
 
-	public Session getCurrentSession();
+	public ISession getCurrentSession();
 
 
-	public Run getCurrentRun();
+	public IRun getCurrentRun();
 
 
 	public void addParticipant(final UserName name, 

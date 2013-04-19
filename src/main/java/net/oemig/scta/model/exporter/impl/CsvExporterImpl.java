@@ -7,11 +7,13 @@ import java.util.Map;
 
 import javax.swing.JFileChooser;
 
+import net.oemig.scta.model.IParticipant;
+import net.oemig.scta.model.IResponseData;
+import net.oemig.scta.model.IRun;
+import net.oemig.scta.model.ISession;
 import net.oemig.scta.model.ITraceModel;
-import net.oemig.scta.model.binding.Trace.Session;
-import net.oemig.scta.model.binding.Trace.Session.Run;
-import net.oemig.scta.model.binding.Trace.Session.Run.Participant;
-import net.oemig.scta.model.binding.Trace.Session.Run.ResponseData;
+import net.oemig.scta.model.data.ExperiementId;
+import net.oemig.scta.model.data.QuestionType;
 import net.oemig.scta.model.exporter.IExporter;
 
 public final class CsvExporterImpl implements IExporter {
@@ -37,22 +39,22 @@ public final class CsvExporterImpl implements IExporter {
 			
 			FileWriter fw = new FileWriter(fc.getSelectedFile());
 			
-			for(Session s:aModel.getCurrentTrace().getSession()){
-				for (Run r:s.getRun()){
-					Map<String, Participant> pMap=new HashMap<String, Participant>();
-					for(Participant p: r.getParticipant()){
+			for(ISession s:aModel.getCurrentTrace().getSessions()){
+				for (IRun r:s.getRuns()){
+					Map<String, IParticipant> pMap=new HashMap<String, IParticipant>();
+					for(IParticipant p: r.getParticipants()){
 						pMap.put(p.getName(), p);
 					}
 					
-					for(ResponseData rd:r.getResponseData()){
+					for(IResponseData rd:r.getResponseData()){
 						writeLine(fw, aModel.getCurrentTrace().getName(),
 											s.getName(),
 											"runname",
-											rd.getParticipant(), 
-											pMap.get(rd.getParticipant()).getExperimentId(),
+											rd.getParticipantName(), 
+											pMap.get(rd.getParticipantName()).getExperimentId(),
 											rd.isCorrect(), 
-											rd.getResponsetime(),
-											rd.getQuestionType().toString());
+											rd.getResponseTime(),
+											rd.getQuestionType());
 					}
 				}
 			}
@@ -72,19 +74,19 @@ public final class CsvExporterImpl implements IExporter {
 							String sessionName,
 							String runName,
 							String name,
-							String experiementId,
-							Boolean correct, 
-							Integer time,
-							String questionType
+							ExperiementId experiementId,
+							boolean correct, 
+							int time,
+							QuestionType questionType
 							) throws IOException{
 		fw.append(traceName).append(',').
 			append(sessionName).append(',').
 			append(runName).append(',').
 			append(name).append(',').
-			append(experiementId).append(',').
-			append(correct.toString()).append(',').
-			append(time.toString()).append(',').
-			append(questionType).append('\n');
+			append(experiementId.toString()).append(',').
+			append(Boolean.toString(correct)).append(',').
+			append(Integer.toString(time)).append(',').
+			append(questionType.toString()).append('\n');
 		
 	}
 
