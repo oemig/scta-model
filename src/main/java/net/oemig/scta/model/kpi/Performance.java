@@ -2,7 +2,7 @@ package net.oemig.scta.model.kpi;
 
 import net.oemig.scta.model.IRun;
 import net.oemig.scta.model.ISession;
-
+//FIXME revise to single interface using Runs as in error rate
 public class Performance {
 
 	//average performance of all runs of the session
