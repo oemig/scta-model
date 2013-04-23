@@ -1,32 +1,29 @@
 package net.oemig.scta.model.kpi;
 
+import java.util.List;
+
 import net.oemig.scta.model.IRun;
-import net.oemig.scta.model.ISession;
-//FIXME revise to single interface using Runs as in error rate
-public class Performance {
+import net.oemig.scta.model.data.Millisecond;
+
+public final class Performance implements IKeyPerformanceIndicator{
 
 	//average performance of all runs of the session
-	public static Performance getInstance(ISession aSession,
-			int aRunDuration) {
-		return new Performance(aSession, aRunDuration);
+	public static Performance of(List<IRun> aRunList,
+			Millisecond aRunDuration) {
+		return new Performance(aRunList, aRunDuration);
 	}
 	
-	//performance for a single run
-	public static Performance getInstance(IRun aRun, int aRunDuration){
-		return new Performance(aRun, aRunDuration);
-	}
-
 	private double value;
 
-	public Performance(ISession aSession, int aRunDuration) {
+	public Performance(List<IRun> aRunList, Millisecond aRunDuration) {
 		int countDataCounter = 0;
-		for (IRun run : aSession.getRuns()) {
+		for (IRun run : aRunList) {
 			countDataCounter += run.getCountData().size();
 		}
 
-		double avgCountDataPerRun = countDataCounter / aSession.getRuns().size();
+		double avgCountDataPerRun = countDataCounter / aRunList.size();
 
-		value = avgCountDataPerRun / aRunDuration;
+		value = avgCountDataPerRun / aRunDuration.intValue();
 	}
 	
 	public Performance(IRun aRun, int aRunDuration){

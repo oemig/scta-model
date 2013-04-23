@@ -1,27 +1,28 @@
 package net.oemig.scta.model.test;
 
 import net.oemig.scta.model.IResponseData;
+import net.oemig.scta.model.data.Millisecond;
 import net.oemig.scta.model.data.QuestionType;
 
 public class ResponseDataImpl implements IResponseData {
 
-	public static IResponseData of(int responseTime, boolean isCorrect, String participantName, QuestionType questionType){
+	public static IResponseData of(Millisecond responseTime, boolean isCorrect, String participantName, QuestionType questionType){
 		return new ResponseDataImpl(responseTime, isCorrect, participantName, questionType);
 	}
 
-	private int responseTime;
+	private Millisecond responseTime;
 	private boolean correct;
 	private String participantName;
 	private QuestionType questionType;
 	
-	private ResponseDataImpl(int responseTime, boolean isCorrect, String participantName, QuestionType questionType){
+	private ResponseDataImpl(Millisecond responseTime, boolean isCorrect, String participantName, QuestionType questionType){
 		this.responseTime=responseTime;
 		this.correct=isCorrect;
 		this.participantName=participantName;
 		this.questionType=questionType;
 	}
 	@Override
-	public int getResponseTime() {
+	public Millisecond getResponseTime() {
 		return responseTime;
 	}
 

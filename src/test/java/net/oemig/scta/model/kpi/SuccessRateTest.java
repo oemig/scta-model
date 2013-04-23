@@ -13,11 +13,11 @@ import com.google.common.collect.ImmutableList;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-public class ErrorRateTest extends TestCase{
-	
+public class SuccessRateTest extends TestCase{
+
 	//single run in list
 	public void testSingleRun(){
-		double e=ErrorRate.of(ImmutableList.of(
+		double s=SuccessRate.of(ImmutableList.of(
 						RunImpl.of(
 								ImmutableList.of(CountDataImpl.of("A",11,"jeff"), CountDataImpl.of("B", 22, "tim")), 
 								ImmutableList.of(ResponseDataImpl.of(Millisecond.of(11), true, "jeff", QuestionType.GroupHow),
@@ -25,12 +25,11 @@ public class ErrorRateTest extends TestCase{
 								ImmutableList.of(ParticipantImpl.of("jeff", ExperiementId.of("DD")), ParticipantImpl.of("tim",ExperiementId.of("DD")))
 								) 
 				)).getValue();
-		System.out.println("e="+e);
-		Assert.assertEquals("unexpected error rate", 0.5,e);
+		Assert.assertEquals("unexpected success rate", 0.5,s);
 	}
 	
 	public void testMultipleRuns(){
-		double e=ErrorRate.of(ImmutableList.of(
+		double s=SuccessRate.of(ImmutableList.of(
 				RunImpl.of(
 						ImmutableList.of(CountDataImpl.of("A",11,"jeff"), CountDataImpl.of("B", 22, "tim")), 
 						ImmutableList.of(ResponseDataImpl.of(Millisecond.of(11), true, "jeff", QuestionType.GroupHow),
@@ -44,8 +43,7 @@ public class ErrorRateTest extends TestCase{
 						ImmutableList.of(ParticipantImpl.of("jeff", ExperiementId.of("DD")), ParticipantImpl.of("tim",ExperiementId.of("DD")))
 						)
 		)).getValue();
-		System.out.println("e="+e);
-		Assert.assertEquals("unexpected error rate", 0.25,e);
+		Assert.assertEquals("unexpected success rate", 0.75,s);
 	}
 
 }

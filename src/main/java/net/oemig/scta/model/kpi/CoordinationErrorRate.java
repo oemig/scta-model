@@ -7,9 +7,9 @@ import java.util.Map;
 import net.oemig.scta.model.ICountData;
 import net.oemig.scta.model.IRun;
 
-public class CoordinationErrorRate {
+public final class CoordinationErrorRate implements IKeyPerformanceIndicator{
 
-	public static CoordinationErrorRate getInstance(List<IRun> aRunList) {
+	public static CoordinationErrorRate of(List<IRun> aRunList) {
 		return new CoordinationErrorRate(aRunList);
 	}
 
@@ -42,7 +42,7 @@ public class CoordinationErrorRate {
 
 		}
 
-		value = multiCountOverCount / aRunList.size();
+		value = (double)multiCountOverCount / aRunList.size();
 
 	}
 

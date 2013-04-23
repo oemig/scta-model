@@ -53,7 +53,7 @@ public final class CsvExporterImpl implements IExporter {
 											rd.getParticipantName(), 
 											pMap.get(rd.getParticipantName()).getExperimentId(),
 											rd.isCorrect(), 
-											rd.getResponseTime(),
+											rd.getResponseTime().intValue(),
 											rd.getQuestionType());
 					}
 				}

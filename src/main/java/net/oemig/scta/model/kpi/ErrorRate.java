@@ -5,9 +5,9 @@ import java.util.List;
 import net.oemig.scta.model.IResponseData;
 import net.oemig.scta.model.IRun;
 
-public class ErrorRate {
+public final class ErrorRate implements IKeyPerformanceIndicator{
 
-	public static ErrorRate getInstance(List<IRun> aRunList) {
+	public static ErrorRate of(List<IRun> aRunList) {
 		return new ErrorRate(aRunList);
 	}
 

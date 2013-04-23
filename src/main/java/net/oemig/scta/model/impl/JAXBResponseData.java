@@ -2,6 +2,7 @@ package net.oemig.scta.model.impl;
 
 import net.oemig.scta.model.IResponseData;
 import net.oemig.scta.model.binding.Trace.Session.Run.ResponseData;
+import net.oemig.scta.model.data.Millisecond;
 import net.oemig.scta.model.data.QuestionType;
 
 public final class JAXBResponseData implements IResponseData {
@@ -17,8 +18,8 @@ public final class JAXBResponseData implements IResponseData {
 	}
 	
 	@Override
-	public int getResponseTime() {
-		return responseData.getResponsetime().intValue();
+	public Millisecond getResponseTime() {
+		return Millisecond.of(responseData.getResponsetime().intValue());
 	}
 
 	@Override
