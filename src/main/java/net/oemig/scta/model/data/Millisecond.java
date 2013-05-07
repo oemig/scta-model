@@ -26,8 +26,4 @@ public final class Millisecond {
 	public int intValue(){
 		return millis;
 	}
-	
-	public int getSeconds(){
-		return millis/1000;
-	}
 }

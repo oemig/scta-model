@@ -5,10 +5,10 @@ import junit.framework.TestCase;
 import net.oemig.scta.model.data.ExperiementId;
 import net.oemig.scta.model.data.Millisecond;
 import net.oemig.scta.model.data.QuestionType;
-import net.oemig.scta.model.test.CountDataImpl;
-import net.oemig.scta.model.test.ParticipantImpl;
-import net.oemig.scta.model.test.ResponseDataImpl;
-import net.oemig.scta.model.test.RunImpl;
+import net.oemig.scta.model.impl.pojo.CountDataImpl;
+import net.oemig.scta.model.impl.pojo.ParticipantImpl;
+import net.oemig.scta.model.impl.pojo.ResponseDataImpl;
+import net.oemig.scta.model.impl.pojo.RunImpl;
 
 import com.google.common.collect.ImmutableList;
 

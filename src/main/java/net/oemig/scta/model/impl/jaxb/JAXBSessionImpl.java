@@ -1,4 +1,4 @@
-package net.oemig.scta.model.impl;
+package net.oemig.scta.model.impl.jaxb;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package net.oemig.scta.model.test;
+package net.oemig.scta.model.impl.pojo;
 
 import java.util.List;
 

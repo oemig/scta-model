@@ -6,12 +6,13 @@
   <artifactId>scta-model</artifactId>
   <version>0.1</version>
   <packaging>jar</packaging>
-
+  	
   <name>scta-model</name>
   <url>http://maven.apache.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jdk.version>1.6</jdk.version>
   </properties>
 
   <dependencies>
@@ -55,4 +56,31 @@
             </plugin>
     </plugins>
   </build>
+  <reporting>
+  	<plugins>
+        <plugin>
+        	<groupId>org.codehaus.mojo</groupId>
+			<artifactId>findbugs-maven-plugin</artifactId>
+			<version>2.5.2</version>        	
+        </plugin>
+        <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <version>2.10</version>
+      </plugin>
+        <plugin>
+        	<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-pmd-plugin</artifactId>
+			<version>2.7.1</version>
+			<configuration>
+				<targetJdk>${jdk.version}</targetJdk>
+			</configuration>        	
+        </plugin>
+        <plugin>
+        	<groupId>org.codehaus.mojo</groupId>
+			<artifactId>cobertura-maven-plugin</artifactId>
+			<version>2.5.1</version>        	
+        </plugin>
+     </plugins>
+  </reporting>
 </project>

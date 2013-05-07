@@ -1,9 +1,9 @@
-package net.oemig.scta.model.impl;
+package net.oemig.scta.model.impl.jaxb;
 
 import net.oemig.scta.model.ICountData;
 import net.oemig.scta.model.binding.Trace.Session.Run.CountData;
 
-public class JAXBCountDataImpl implements ICountData {
+public final class JAXBCountDataImpl implements ICountData {
 
 	public static JAXBCountDataImpl of(CountData aCountData){
 		return new JAXBCountDataImpl(aCountData);

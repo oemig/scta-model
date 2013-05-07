@@ -1,4 +1,4 @@
-package net.oemig.scta.model.impl;
+package net.oemig.scta.model.impl.jaxb;
 
 import java.io.File;
 
@@ -22,7 +22,7 @@ import net.oemig.scta.model.data.QuestionType;
 import net.oemig.scta.model.data.UserName;
 import net.oemig.scta.model.exporter.IExporter;
 
-public class JAXBTraceModelImpl implements ITraceModel {
+public final class JAXBTraceModelImpl implements ITraceModel {
 
 	private static final String TRACE_FILE_PREFIX = "scta_";
 
@@ -130,7 +130,7 @@ public class JAXBTraceModelImpl implements ITraceModel {
 				.createTraceSessionRunResponseData();
 		responseData.setParticipant(participantName.toString());
 		responseData.setCorrect(isCorrect);
-		responseData.setResponsetime(new Integer(responseTime));
+		responseData.setResponsetime(Integer.valueOf(responseTime));
 		responseData.setQuestionType(questionType.name());
 
 		currentRun.getResponseData().add(responseData);

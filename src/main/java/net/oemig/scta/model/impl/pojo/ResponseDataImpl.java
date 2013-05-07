@@ -1,4 +1,4 @@
-package net.oemig.scta.model.test;
+package net.oemig.scta.model.impl.pojo;
 
 import net.oemig.scta.model.IResponseData;
 import net.oemig.scta.model.data.Millisecond;

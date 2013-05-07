@@ -1,4 +1,4 @@
-package net.oemig.scta.model.impl;
+package net.oemig.scta.model.impl.jaxb;
 
 import net.oemig.scta.model.IResponseData;
 import net.oemig.scta.model.binding.Trace.Session.Run.ResponseData;

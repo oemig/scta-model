@@ -5,6 +5,10 @@ import java.util.List;
 import net.oemig.scta.model.IRun;
 import net.oemig.scta.model.data.Millisecond;
 
+/**
+ * 
+ * @author chris
+ */
 public final class Performance implements IKeyPerformanceIndicator{
 
 	//average performance of all runs of the session
@@ -26,10 +30,6 @@ public final class Performance implements IKeyPerformanceIndicator{
 		value = avgCountDataPerRun / aRunDuration.intValue();
 	}
 	
-	public Performance(IRun aRun, int aRunDuration){
-		value=(double) aRun.getCountData().size()/aRunDuration;
-	}
-
 	public double getValue() {
 		return value;
 	}
