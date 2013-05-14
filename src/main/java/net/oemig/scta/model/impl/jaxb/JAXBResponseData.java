@@ -4,6 +4,7 @@ import net.oemig.scta.model.IResponseData;
 import net.oemig.scta.model.binding.Trace.Session.Run.ResponseData;
 import net.oemig.scta.model.data.Millisecond;
 import net.oemig.scta.model.data.QuestionType;
+import net.oemig.scta.model.data.UserName;
 
 public final class JAXBResponseData implements IResponseData {
 
@@ -28,8 +29,8 @@ public final class JAXBResponseData implements IResponseData {
 	}
 
 	@Override
-	public String getParticipantName() {
-		return responseData.getParticipant();
+	public UserName getParticipantName() {
+		return UserName.of(responseData.getParticipant());
 	}
 
 	@Override

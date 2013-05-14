@@ -1,9 +1,10 @@
 package net.oemig.scta.model;
 
 import net.oemig.scta.model.data.ExperiementId;
+import net.oemig.scta.model.data.UserName;
 
 public interface IParticipant {
 
-	public String getName();
+	public UserName getName();
 	public ExperiementId getExperimentId();
 }

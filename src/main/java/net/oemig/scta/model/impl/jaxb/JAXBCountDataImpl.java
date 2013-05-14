@@ -2,6 +2,7 @@ package net.oemig.scta.model.impl.jaxb;
 
 import net.oemig.scta.model.ICountData;
 import net.oemig.scta.model.binding.Trace.Session.Run.CountData;
+import net.oemig.scta.model.data.UserName;
 
 public final class JAXBCountDataImpl implements ICountData {
 
@@ -21,12 +22,12 @@ public final class JAXBCountDataImpl implements ICountData {
 	}
 
 	@Override
-	public String getParticipant() {
-		return countData.getParticipant();
+	public UserName getParticipant() {
+		return UserName.of(countData.getParticipant());
 	}
 
 	@Override
 	public int getQuantity() {
-		return 0;
+		return countData.getQuantity().intValue();
 	}
 }

@@ -2,6 +2,9 @@ package net.oemig.scta.model.data;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 /**
  * {@link UserName} class added for type safety reasons.
  * 
@@ -15,6 +18,11 @@ public final class UserName implements Serializable {
 	public static UserName of(final String aName){
 		return new UserName(aName);
 	}
+	
+	public static final UserName TIM =of("tim");
+	public static final UserName TINA=of("tina");
+	public static final UserName JEFF=of("jeff");
+	
 
 	private String userName;
 	
@@ -24,6 +32,16 @@ public final class UserName implements Serializable {
 	
 	public String toString(){
 		return userName;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		return EqualsBuilder.reflectionEquals(this,obj);
+	}
+	
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
 	}
 
 }

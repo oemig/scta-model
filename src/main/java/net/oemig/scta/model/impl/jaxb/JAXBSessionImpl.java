@@ -32,7 +32,7 @@ public final class JAXBSessionImpl implements ISession {
 		for(Trace.Session.Run r:session.getRun()){
 			result.add(JAXBRunImpl.of(r));
 		}
-		return null;
+		return result;
 	}
 	
 }

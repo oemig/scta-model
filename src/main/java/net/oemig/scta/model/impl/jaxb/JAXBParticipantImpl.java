@@ -3,6 +3,7 @@ package net.oemig.scta.model.impl.jaxb;
 import net.oemig.scta.model.IParticipant;
 import net.oemig.scta.model.binding.Trace.Session.Run.Participant;
 import net.oemig.scta.model.data.ExperiementId;
+import net.oemig.scta.model.data.UserName;
 
 public final class JAXBParticipantImpl implements IParticipant {
 
@@ -17,8 +18,8 @@ public final class JAXBParticipantImpl implements IParticipant {
 	}
 
 	@Override
-	public String getName() {
-		return participant.getName();
+	public UserName getName() {
+		return UserName.of(participant.getName());
 	}
 
 	@Override

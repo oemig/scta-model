@@ -8,7 +8,7 @@ import net.oemig.scta.model.IRun;
 import net.oemig.scta.model.data.Millisecond;
 import net.oemig.scta.model.data.QuestionType;
 import net.oemig.scta.model.exception.ResponseDataMissingException;
-import net.oemig.scta.model.impl.pojo.RunImpl;
+import net.oemig.scta.model.impl.pojo.PojoRunImpl;
 import net.oemig.scta.model.kpi.AvgResponseTimeForgettingTimeRatio;
 import net.oemig.scta.model.kpi.CoordinationErrorRate;
 import net.oemig.scta.model.kpi.ErrorRate;
@@ -120,7 +120,7 @@ public class KpiResult {
 				};}
 			));
 			
-			result.add(RunImpl.of(r.getCountData(), l,r.getParticipants()));
+			result.add(PojoRunImpl.create(r.getCountData(), l,r.getParticipants()));
 		}
 		
 		return result;

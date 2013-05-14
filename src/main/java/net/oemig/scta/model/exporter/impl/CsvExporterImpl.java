@@ -2,7 +2,6 @@ package net.oemig.scta.model.exporter.impl;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JFileChooser;
@@ -14,11 +13,14 @@ import net.oemig.scta.model.ISession;
 import net.oemig.scta.model.ITraceModel;
 import net.oemig.scta.model.data.ExperiementId;
 import net.oemig.scta.model.data.QuestionType;
+import net.oemig.scta.model.data.UserName;
 import net.oemig.scta.model.exporter.IExporter;
+
+import com.google.common.collect.Maps;
 
 public final class CsvExporterImpl implements IExporter {
 
-	public static CsvExporterImpl getInstance(){
+	public static CsvExporterImpl create(){
 		return new CsvExporterImpl();
 	}
 
@@ -41,7 +43,7 @@ public final class CsvExporterImpl implements IExporter {
 			
 			for(ISession s:aModel.getCurrentTrace().getSessions()){
 				for (IRun r:s.getRuns()){
-					Map<String, IParticipant> pMap=new HashMap<String, IParticipant>();
+					Map<UserName, IParticipant> pMap=Maps.newHashMap();
 					for(IParticipant p: r.getParticipants()){
 						pMap.put(p.getName(), p);
 					}
@@ -50,7 +52,7 @@ public final class CsvExporterImpl implements IExporter {
 						writeLine(fw, aModel.getCurrentTrace().getName(),
 											s.getName(),
 											"runname",
-											rd.getParticipantName(), 
+											rd.getParticipantName().toString(), 
 											pMap.get(rd.getParticipantName()).getExperimentId(),
 											rd.isCorrect(), 
 											rd.getResponseTime().intValue(),

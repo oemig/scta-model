@@ -3,7 +3,6 @@ package net.oemig.scta.model.impl.jaxb;
 import java.io.File;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.xml.bind.JAXB;
 
 import net.oemig.scta.model.IRun;
@@ -18,8 +17,10 @@ import net.oemig.scta.model.binding.Trace.Session.Run.CountData;
 import net.oemig.scta.model.binding.Trace.Session.Run.Participant;
 import net.oemig.scta.model.binding.Trace.Session.Run.ResponseData;
 import net.oemig.scta.model.data.ExperiementId;
+import net.oemig.scta.model.data.Millisecond;
 import net.oemig.scta.model.data.QuestionType;
 import net.oemig.scta.model.data.UserName;
+import net.oemig.scta.model.exception.OperationNotSupportedException;
 import net.oemig.scta.model.exporter.IExporter;
 
 public final class JAXBTraceModelImpl implements ITraceModel {
@@ -35,11 +36,22 @@ public final class JAXBTraceModelImpl implements ITraceModel {
 
 	private String traceFileDirectory;
 	
-	public static JAXBTraceModelImpl with(String aTraceFileDirectory, IExporter anExporter){
-		return new JAXBTraceModelImpl(aTraceFileDirectory, anExporter);
+	public static ITraceModel create(
+			final String aTraceName, 
+			final String aSessionName,
+			final String aTraceFileDirectory, 
+			IExporter anExporter){
+		
+		return new JAXBTraceModelImpl(aTraceName,aSessionName,aTraceFileDirectory, anExporter);
 	}
 	
-	private JAXBTraceModelImpl(String aTraceFileDirecotry, IExporter anExporter) {
+	//private constructor
+	private JAXBTraceModelImpl(
+			final String aTraceName,
+			final String aSessionName,
+			final String aTraceFileDirecotry, 
+			IExporter anExporter) {
+		
 		traceFileDirectory=aTraceFileDirecotry;
 		exporter=anExporter;
 		this.objectFactory = new ObjectFactory();
@@ -53,23 +65,20 @@ public final class JAXBTraceModelImpl implements ITraceModel {
 		// no
 		// create new trace object
 		// create new session object
-		String traceName = JOptionPane
-				.showInputDialog("Please enter a trace name!");
+
 		try{
 			//try to find trace file
-			File traceFile=new File(traceFileDirectory+File.separator+TRACE_FILE_PREFIX+traceName+".xml");
+			File traceFile=new File(traceFileDirectory+File.separator+TRACE_FILE_PREFIX+aTraceName+".xml");
 			currentTrace=JAXB.unmarshal(traceFile, Trace.class);
 		}catch(Exception e){
 			//not found.. create a new one
 			currentTrace=this.objectFactory.createTrace();
-			currentTrace.setName(traceName);
+			currentTrace.setName(aTraceName);
 		}
 
-		String sessionName = JOptionPane
-				.showInputDialog("Please enter a session name!");
 
 		currentSession=this.objectFactory.createTraceSession();
-		currentSession.setName(sessionName);
+		currentSession.setName(aSessionName);
 		currentTrace.getSession().add(currentSession);
 
 		currentRun=this.objectFactory.createTraceSessionRun();
@@ -77,9 +86,6 @@ public final class JAXBTraceModelImpl implements ITraceModel {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see net.oemig.scta.tracer.model.ITraceModel#getCurrentTrace()
-	 */
 	@Override
 	public ITrace getCurrentTrace() {
 		return JAXBTraceImpl.of(currentTrace);
@@ -124,13 +130,13 @@ public final class JAXBTraceModelImpl implements ITraceModel {
 	public void addResponseData(
 			final UserName participantName, 
 			final boolean isCorrect,
-			final int responseTime,
+			final Millisecond responseTime,
 			final QuestionType questionType) {
 		ResponseData responseData = this.objectFactory
 				.createTraceSessionRunResponseData();
 		responseData.setParticipant(participantName.toString());
 		responseData.setCorrect(isCorrect);
-		responseData.setResponsetime(Integer.valueOf(responseTime));
+		responseData.setResponsetime(Integer.valueOf(responseTime.intValue()));
 		responseData.setQuestionType(questionType.name());
 
 		currentRun.getResponseData().add(responseData);
@@ -138,7 +144,8 @@ public final class JAXBTraceModelImpl implements ITraceModel {
 	}
 
 	@Override
-	public void save() {
+	public void save() throws OperationNotSupportedException{
+		//FIXME no gui in a model class!!
 		JFileChooser fc=new JFileChooser();
 		fc.setDialogType(JFileChooser.SAVE_DIALOG);
 		int state=fc.showSaveDialog(null);
@@ -150,7 +157,7 @@ public final class JAXBTraceModelImpl implements ITraceModel {
 	}
 	
 	@Override
-	public void export(){
+	public void export() throws OperationNotSupportedException{
 		exporter.export(this);
 	}
 	

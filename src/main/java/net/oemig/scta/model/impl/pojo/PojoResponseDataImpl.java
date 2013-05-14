@@ -3,19 +3,21 @@ package net.oemig.scta.model.impl.pojo;
 import net.oemig.scta.model.IResponseData;
 import net.oemig.scta.model.data.Millisecond;
 import net.oemig.scta.model.data.QuestionType;
+import net.oemig.scta.model.data.UserName;
 
-public class ResponseDataImpl implements IResponseData {
+public final class PojoResponseDataImpl implements IResponseData {
 
-	public static IResponseData of(Millisecond responseTime, boolean isCorrect, String participantName, QuestionType questionType){
-		return new ResponseDataImpl(responseTime, isCorrect, participantName, questionType);
+	public static IResponseData of(Millisecond responseTime, boolean isCorrect, UserName participantName, QuestionType questionType){
+		return new PojoResponseDataImpl(responseTime, isCorrect, participantName, questionType);
 	}
 
 	private Millisecond responseTime;
 	private boolean correct;
-	private String participantName;
+	private UserName participantName;
 	private QuestionType questionType;
 	
-	private ResponseDataImpl(Millisecond responseTime, boolean isCorrect, String participantName, QuestionType questionType){
+	//private constructor
+	private PojoResponseDataImpl(Millisecond responseTime, boolean isCorrect, UserName participantName, QuestionType questionType){
 		this.responseTime=responseTime;
 		this.correct=isCorrect;
 		this.participantName=participantName;
@@ -32,7 +34,7 @@ public class ResponseDataImpl implements IResponseData {
 	}
 
 	@Override
-	public String getParticipantName() {
+	public UserName getParticipantName() {
 		return participantName;
 	}
 

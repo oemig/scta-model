@@ -9,20 +9,17 @@ import net.oemig.scta.model.binding.Trace;
 import net.oemig.scta.model.binding.Trace.Session;
 
 public final class JAXBTraceImpl implements ITrace {
-	public static JAXBTraceImpl of(Trace aTrace){
+	public static ITrace of(Trace aTrace){
 		return new JAXBTraceImpl(aTrace);
 	}
 	
 	private Trace trace;
 	
+	//private constructor
 	private JAXBTraceImpl(Trace aTrace){
 		this.trace=aTrace;
 	}
 	
-	public JAXBTraceImpl name(String aName){
-		trace.setName(aName);
-		return this;
-	}
 
 	@Override
 	public String getName() {
