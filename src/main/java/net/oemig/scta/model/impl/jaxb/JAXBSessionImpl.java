@@ -5,20 +5,16 @@ import java.util.List;
 
 import net.oemig.scta.model.IRun;
 import net.oemig.scta.model.ISession;
+import net.oemig.scta.model.binding.ObjectFactory;
 import net.oemig.scta.model.binding.Trace;
 import net.oemig.scta.model.binding.Trace.Session;
 
 public final class JAXBSessionImpl implements ISession {
 	
-	public static JAXBSessionImpl of(Session aSession){
-		return new JAXBSessionImpl(aSession);
-	}
-
-
 	private Session session;
 	
-	private JAXBSessionImpl(Session aSession){
-		this.session=aSession;
+	private JAXBSessionImpl(){
+		this.session=new ObjectFactory().createTraceSession();//empty init
 	}
 
 	@Override
@@ -30,9 +26,34 @@ public final class JAXBSessionImpl implements ISession {
 	public List<IRun> getRuns() {
 		List<IRun>result=new ArrayList<IRun>();
 		for(Trace.Session.Run r:session.getRun()){
-			result.add(JAXBRunImpl.of(r));
+			result.add(JAXBRunImpl.builder().run(r).build());
 		}
 		return result;
 	}
+
+	@Override
+	public void setName(String aSessionName) {
+		session.setName(aSessionName);
+	}
+
+	private void setSession(Session aSession){
+		session=aSession;
+	}
 	
+	public static Builder builder(){
+		return new Builder();
+	}
+	
+	public static class Builder{
+		private JAXBSessionImpl s=new JAXBSessionImpl();
+		
+		public Builder session(Session aSession){
+			s.setSession(aSession);
+			return this;
+		}
+		
+		public ISession build(){
+			return s;
+		}
+	}
 }

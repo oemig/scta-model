@@ -7,26 +7,32 @@ import net.oemig.scta.model.data.ExperiementId;
 import net.oemig.scta.model.data.Millisecond;
 import net.oemig.scta.model.data.QuestionType;
 import net.oemig.scta.model.data.UserName;
+import net.oemig.scta.model.test.SctaModelTestConfig;
 
 public class PojoTraceModelTest extends TestCase{
+	
+	private ITraceModel m;
 
-	public void test(){
-		final String t="tracetest";
-		final String s="sessiontest";
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
 		
-		ITraceModel m=PojoTraceModelImpl.create(t,s);
+		m=PojoTraceModelImpl.builder().
+			traceName(SctaModelTestConfig.TRACE_NAME).
+			sessionName(SctaModelTestConfig.SESSION_NAME).
+			build();
 		
-//		Assert.assertEquals("Unexpected trace name", t,m.getCurrentTrace().getName());
-//		Assert.assertEquals("Unexpected session name", s,m.getCurrentSession().getName());
+	}
+
+	public void test() throws Exception{
+		
+		Assert.assertEquals("Unexpected trace name", SctaModelTestConfig.TRACE_NAME,m.getCurrentTrace().getName());
+		Assert.assertEquals("Unexpected session name", SctaModelTestConfig.SESSION_NAME,m.getCurrentSession().getName());
 		Assert.assertEquals("Unexpected number of sessions", 1,m.getCurrentTrace().getSessions().size());
 		Assert.assertEquals("Unexpected number of runs", 1,m.getCurrentSession().getRuns().size());
 	}
 	
-	public void testAddResponseData(){
-		final String t="tracetest";
-		final String s="sessiontest";
-		
-		ITraceModel m=PojoTraceModelImpl.create(t,s);
+	public void testAddResponseData()throws Exception{
 		
 		m.addResponseData(UserName.JEFF, true, Millisecond.of(100), QuestionType.GroupHow);
 		
@@ -37,11 +43,7 @@ public class PojoTraceModelTest extends TestCase{
 		Assert.assertEquals("Unexpected correctness", true,m.getCurrentRun().getResponseData().get(0).isCorrect());
 	}
 
-	public void testAddCountData(){
-		final String t="tracetest";
-		final String s="sessiontest";
-		
-		ITraceModel m=PojoTraceModelImpl.create(t,s);
+	public void testAddCountData()throws Exception{
 		
 		m.addCountData(UserName.JEFF, "s", 11);
 		
@@ -51,11 +53,7 @@ public class PojoTraceModelTest extends TestCase{
 		Assert.assertEquals("Unexpected quantity", 11, m.getCurrentRun().getCountData().get(0).getQuantity());
 	}
 	
-	public void testAddParticipant(){
-		final String t="tracetest";
-		final String s="sessiontest";
-		
-		ITraceModel m=PojoTraceModelImpl.create(t,s);
+	public void testAddParticipant()throws Exception{
 		m.addParticipant(UserName.JEFF, ExperiementId.TEST);
 		
 		Assert.assertEquals("Unexpected number of participants", 1,m.getCurrentRun().getParticipants().size());

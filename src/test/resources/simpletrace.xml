@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Trace Name="Testtrace">
+    <Session Name="TestSession">
+        <Run>
+            <Participant ExperimentId="test" Name="jeff"/>
+            <Participant ExperimentId="test" Name="tina"/>
+            <CountData Quantity="11" Letter="s" Participant="jeff"/>
+            <CountData Quantity="44" Letter="z" Participant="tina"/>
+            <ResponseData QuestionType="GroupHow" Responsetime="100" Correct="true" Participant="jeff"/>
+            <ResponseData QuestionType="GroupWho" Responsetime="300" Correct="false" Participant="tina"/>
+        </Run>
+    </Session>
+</Trace>

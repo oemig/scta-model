@@ -17,18 +17,18 @@ public class AvgResponseTimeForgettingTimeRatioTest extends TestCase{
 	
 	public void testMultipleRuns(){
 		double a=AvgResponseTimeForgettingTimeRatio.of(ImmutableList.of(
-				PojoRunImpl.create(
-						ImmutableList.of(PojoCountDataImpl.of("A",11,UserName.JEFF), PojoCountDataImpl.of("B", 22, UserName.TIM)), 
-						ImmutableList.of(PojoResponseDataImpl.of(Millisecond.of(22), true, UserName.JEFF, QuestionType.GroupHow),
-								PojoResponseDataImpl.of(Millisecond.of(22), false, UserName.JEFF, QuestionType.GroupHow)), 
-						ImmutableList.of(PojoParticipantImpl.create(UserName.JEFF, ExperiementId.of("DD")), PojoParticipantImpl.create(UserName.of("tim"),ExperiementId.of("DD")))
-						),
-				PojoRunImpl.create(
-						ImmutableList.of(PojoCountDataImpl.of("A",11,UserName.JEFF), PojoCountDataImpl.of("B", 22, UserName.TIM)), 
-						ImmutableList.of(PojoResponseDataImpl.of(Millisecond.of(11), true, UserName.JEFF, QuestionType.GroupHow),
-								PojoResponseDataImpl.of(Millisecond.of(11), true, UserName.JEFF, QuestionType.GroupHow)), 
-						ImmutableList.of(PojoParticipantImpl.create(UserName.JEFF, ExperiementId.of("DD")), PojoParticipantImpl.create(UserName.of("tim"),ExperiementId.of("DD")))
-						)
+				PojoRunImpl.builder().
+					countData(ImmutableList.of(PojoCountDataImpl.of("A",11,UserName.JEFF), PojoCountDataImpl.of("B", 22, UserName.TIM))).
+					responseData(ImmutableList.of(PojoResponseDataImpl.of(Millisecond.of(22), true, UserName.JEFF, QuestionType.GroupHow),
+								PojoResponseDataImpl.of(Millisecond.of(22), false, UserName.JEFF, QuestionType.GroupHow))).
+					participants(ImmutableList.of(PojoParticipantImpl.create(UserName.JEFF, ExperiementId.of("DD")), PojoParticipantImpl.create(UserName.of("tim"),ExperiementId.of("DD")))).
+					build(),
+				PojoRunImpl.builder().
+					countData(ImmutableList.of(PojoCountDataImpl.of("A",11,UserName.JEFF), PojoCountDataImpl.of("B", 22, UserName.TIM))).
+					responseData(ImmutableList.of(PojoResponseDataImpl.of(Millisecond.of(11), true, UserName.JEFF, QuestionType.GroupHow),
+								PojoResponseDataImpl.of(Millisecond.of(11), true, UserName.JEFF, QuestionType.GroupHow))).
+					participants(ImmutableList.of(PojoParticipantImpl.create(UserName.JEFF, ExperiementId.of("DD")), PojoParticipantImpl.create(UserName.of("tim"),ExperiementId.of("DD")))).
+					build()
 		), Millisecond.of(100)).getValue();
 		
 		Assert.assertEquals(0.165, a);

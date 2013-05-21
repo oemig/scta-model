@@ -120,7 +120,7 @@ public class KpiResult {
 				};}
 			));
 			
-			result.add(PojoRunImpl.create(r.getCountData(), l,r.getParticipants()));
+			result.add(PojoRunImpl.builder().countData(r.getCountData()).responseData(l).participants(r.getParticipants()).build());
 		}
 		
 		return result;

@@ -24,8 +24,7 @@ public final class CsvExporterImpl implements IExporter {
 		return new CsvExporterImpl();
 	}
 
-	private CsvExporterImpl(){
-	}
+	private CsvExporterImpl(){}
 	
 	
 	@Override
@@ -33,6 +32,7 @@ public final class CsvExporterImpl implements IExporter {
 		
 		
 		try {
+			//FIXME no ui code in model class!!
 			JFileChooser fc=new JFileChooser();
 			fc.setDialogType(JFileChooser.SAVE_DIALOG);
 			int state=fc.showSaveDialog(null);

@@ -1,6 +1,7 @@
 package net.oemig.scta.model.impl.jaxb;
 
 import net.oemig.scta.model.IResponseData;
+import net.oemig.scta.model.binding.ObjectFactory;
 import net.oemig.scta.model.binding.Trace.Session.Run.ResponseData;
 import net.oemig.scta.model.data.Millisecond;
 import net.oemig.scta.model.data.QuestionType;
@@ -8,14 +9,14 @@ import net.oemig.scta.model.data.UserName;
 
 public final class JAXBResponseData implements IResponseData {
 
-	public static JAXBResponseData of(ResponseData aResponseData){
-		return new JAXBResponseData(aResponseData);
-	}
-
 	private ResponseData responseData;
 	
-	private JAXBResponseData(ResponseData aResponseData){
-		this.responseData=aResponseData;
+	private JAXBResponseData(){
+		this.responseData=new ObjectFactory().createTraceSessionRunResponseData();
+	}
+	
+	private void setResponseData(ResponseData aResponseData){
+		responseData=aResponseData;
 	}
 	
 	@Override
@@ -36,6 +37,22 @@ public final class JAXBResponseData implements IResponseData {
 	@Override
 	public QuestionType getQuestionType() {
 		return QuestionType.valueOf(responseData.getQuestionType());
+	}
+	
+	public static Builder builder(){
+		return new Builder();
+	}
+	
+	public static class Builder{
+		private JAXBResponseData r=new JAXBResponseData();
+		
+		public Builder responseData(ResponseData aResponseData){
+			r.setResponseData(aResponseData);
+			return this;
+		}
+		public IResponseData build(){
+			return r;
+		}
 	}
 
 }

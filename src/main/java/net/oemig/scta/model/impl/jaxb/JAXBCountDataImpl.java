@@ -1,21 +1,22 @@
 package net.oemig.scta.model.impl.jaxb;
 
 import net.oemig.scta.model.ICountData;
+import net.oemig.scta.model.binding.ObjectFactory;
 import net.oemig.scta.model.binding.Trace.Session.Run.CountData;
 import net.oemig.scta.model.data.UserName;
 
 public final class JAXBCountDataImpl implements ICountData {
 
-	public static JAXBCountDataImpl of(CountData aCountData){
-		return new JAXBCountDataImpl(aCountData);
-	}
-
 	private CountData countData;
 	
-	private JAXBCountDataImpl(CountData aCountData){
-		this.countData=aCountData;
+	private JAXBCountDataImpl(){
+		this.countData=new ObjectFactory().createTraceSessionRunCountData();
 	}
 
+	private void setCountData(CountData aCountData){
+		countData=aCountData;
+	}
+	
 	@Override
 	public String getLetter() {
 		return countData.getLetter();
@@ -29,5 +30,22 @@ public final class JAXBCountDataImpl implements ICountData {
 	@Override
 	public int getQuantity() {
 		return countData.getQuantity().intValue();
+	}
+	
+	public static Builder builder(){
+		return new Builder();
+	}
+	
+	public static class Builder{
+		private JAXBCountDataImpl c=new JAXBCountDataImpl();
+		
+		public Builder countData(CountData aCountData){
+			c.setCountData(aCountData);
+			return this;
+		}
+		public ICountData build(){
+			return c;
+		}
+		
 	}
 }

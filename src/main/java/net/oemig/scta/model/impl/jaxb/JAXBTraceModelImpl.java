@@ -1,8 +1,8 @@
 package net.oemig.scta.model.impl.jaxb;
 
 import java.io.File;
+import java.io.InputStream;
 
-import javax.swing.JFileChooser;
 import javax.xml.bind.JAXB;
 
 import net.oemig.scta.model.IRun;
@@ -20,12 +20,15 @@ import net.oemig.scta.model.data.ExperiementId;
 import net.oemig.scta.model.data.Millisecond;
 import net.oemig.scta.model.data.QuestionType;
 import net.oemig.scta.model.data.UserName;
+import net.oemig.scta.model.exception.NoCurrentRunSelectedException;
+import net.oemig.scta.model.exception.NoCurrentSessionSelectedException;
 import net.oemig.scta.model.exception.OperationNotSupportedException;
+import net.oemig.scta.model.exception.SessionAlreadyExistsException;
+import net.oemig.scta.model.exception.SessionNotFoundException;
+import net.oemig.scta.model.exception.TraceFileNotFoundExeption;
 import net.oemig.scta.model.exporter.IExporter;
 
 public final class JAXBTraceModelImpl implements ITraceModel {
-
-	private static final String TRACE_FILE_PREFIX = "scta_";
 
 	private ObjectFactory objectFactory;
 	private Trace currentTrace;
@@ -34,72 +37,39 @@ public final class JAXBTraceModelImpl implements ITraceModel {
 
 	private IExporter exporter;
 
-	private String traceFileDirectory;
-	
-	public static ITraceModel create(
-			final String aTraceName, 
-			final String aSessionName,
-			final String aTraceFileDirectory, 
-			IExporter anExporter){
-		
-		return new JAXBTraceModelImpl(aTraceName,aSessionName,aTraceFileDirectory, anExporter);
-	}
 	
 	//private constructor
-	private JAXBTraceModelImpl(
-			final String aTraceName,
-			final String aSessionName,
-			final String aTraceFileDirecotry, 
-			IExporter anExporter) {
-		
-		traceFileDirectory=aTraceFileDirecotry;
-		exporter=anExporter;
+	private JAXBTraceModelImpl() {
 		this.objectFactory = new ObjectFactory();
-		// is there an existing trace file
-		// yes
-		// load trace file
-		// select existing session
-		// yes
-		// no
-		// create new session object
-		// no
-		// create new trace object
-		// create new session object
 
-		try{
-			//try to find trace file
-			File traceFile=new File(traceFileDirectory+File.separator+TRACE_FILE_PREFIX+aTraceName+".xml");
-			currentTrace=JAXB.unmarshal(traceFile, Trace.class);
-		}catch(Exception e){
-			//not found.. create a new one
-			currentTrace=this.objectFactory.createTrace();
-			currentTrace.setName(aTraceName);
-		}
-
-
+		currentTrace=this.objectFactory.createTrace();
 		currentSession=this.objectFactory.createTraceSession();
-		currentSession.setName(aSessionName);
 		currentTrace.getSession().add(currentSession);
 
 		currentRun=this.objectFactory.createTraceSessionRun();
 		currentSession.getRun().add(currentRun);
-
 	}
 
 	@Override
 	public ITrace getCurrentTrace() {
-		return JAXBTraceImpl.of(currentTrace);
+		return JAXBTraceImpl.builder().trace(currentTrace).build();
 	}
 
 	@Override
-	public ISession getCurrentSession() {
-		return JAXBSessionImpl.of(currentSession);
+	public ISession getCurrentSession() throws NoCurrentSessionSelectedException{
+		if(null==currentSession){
+			throw new NoCurrentSessionSelectedException("Current session is null.");
+		}
+		return JAXBSessionImpl.builder().session(currentSession).build();
 	}
 
 
 	@Override
-	public IRun getCurrentRun() {
-		return JAXBRunImpl.of(currentRun);
+	public IRun getCurrentRun() throws NoCurrentRunSelectedException {
+		if(null==currentRun){
+			throw new NoCurrentRunSelectedException("Current run is null.");
+		}
+		return JAXBRunImpl.builder().run(currentRun).build();
 	}
 
 
@@ -142,28 +112,128 @@ public final class JAXBTraceModelImpl implements ITraceModel {
 		currentRun.getResponseData().add(responseData);
 
 	}
-
 	@Override
-	public void save() throws OperationNotSupportedException{
-		//FIXME no gui in a model class!!
-		JFileChooser fc=new JFileChooser();
-		fc.setDialogType(JFileChooser.SAVE_DIALOG);
-		int state=fc.showSaveDialog(null);
-		if(JFileChooser.APPROVE_OPTION==state){
-			JAXB.marshal(currentTrace, fc.getSelectedFile());
+	public void newSession(final String aSessionName) throws SessionAlreadyExistsException{
+		try{
+			findSessionByName(aSessionName);
+			throw new SessionAlreadyExistsException(aSessionName);
+		}catch(SessionNotFoundException e){
+			Session s=new ObjectFactory().createTraceSession();
+			s.setName(aSessionName);
+			
+			currentSession=s;
+			currentTrace.getSession().add(s);
 		}
+	}
+	@Override
+	public void newRun(final String aSessionName) throws SessionNotFoundException{
+		Session s=findSessionByName(aSessionName);
+		Run r=new ObjectFactory().createTraceSessionRun();
+		currentRun=r;
+		s.getRun().add(r);
+	}
+	
+	private Session findSessionByName(String aSessionName) throws SessionNotFoundException{
+		for(Session s:currentTrace.getSession()){
+			if(s.getName().equals(aSessionName)){
+				return s;
+			}
+		}
+		throw new SessionNotFoundException(aSessionName);
+	}
+	@Override
+	public void save(final String fileName) throws OperationNotSupportedException{
+		//FIXME no gui in a model class!!
+//		JFileChooser fc=new JFileChooser();
+//		fc.setDialogType(JFileChooser.SAVE_DIALOG);
+//		int state=fc.showSaveDialog(null);
+//		if(JFileChooser.APPROVE_OPTION==state){
+//			JAXB.marshal(currentTrace, fc.getSelectedFile());
+//		}
 		
+		JAXB.marshal(currentTrace, new File(fileName));
 				
 	}
 	
 	@Override
 	public void export() throws OperationNotSupportedException{
-		exporter.export(this);
+		if(null==exporter){
+			throw new OperationNotSupportedException("Exporter is null.");
+		}else{
+			exporter.export(this);
+		}
 	}
 	
-	public JAXBTraceModelImpl with(IExporter anExporter){
+	private void setExporter(IExporter anExporter){
 		exporter=anExporter;
-		return this;
+	}
+	
+	private void load(final InputStream anIs) throws TraceFileNotFoundExeption{
+		try{
+			//try to find trace file
+			
+			currentTrace=JAXB.unmarshal(anIs, Trace.class);
+			
+			//there is no current run
+			currentRun=null;
+			currentSession=null;
+			//there is no current session
+		}catch(Exception e){
+			//not found.. create a new one
+			throw new TraceFileNotFoundExeption(currentTrace.getName());
+		}
+	}
+	
+	public static Builder builder(){
+		return new Builder();
+	}
+	
+	public static class Builder{
+		private JAXBTraceModelImpl m=new JAXBTraceModelImpl();
+		
+		
+		public Builder exporter(IExporter anExporter){
+			m.setExporter(anExporter);
+			return this;
+		}
+		
+		public Builder load(InputStream anIs) throws TraceFileNotFoundExeption{
+			m.load(anIs);
+			return this;
+		}
+		
+		public Builder traceName(String aTraceName){
+			m.getCurrentTrace().setName(aTraceName);
+			return this;
+		}
+		
+		public Builder sessionName(String aSessionName) throws NoCurrentSessionSelectedException{
+			m.getCurrentSession().setName(aSessionName);
+			return this;
+		}
+		
+		/**
+		 * Add a new run to the current session specified by the
+		 * session name.
+		 * @param aSessionName
+		 * @return
+		 * @throws SessionNotFoundException
+		 */
+		public Builder newRun(String aSessionName) throws SessionNotFoundException{
+			m.newRun(aSessionName);
+			return this;
+		}
+		
+		public Builder newSession(String aSessionName) throws SessionAlreadyExistsException{
+			m.newSession(aSessionName);
+			return this;
+		}
+		public ITraceModel build(){
+			return m;
+		}
+		
+
+		
 	}
 	
 }
