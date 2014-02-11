@@ -1,5 +1,7 @@
 package net.oemig.scta.model.data;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -11,7 +13,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author chris
  *
  */
-public final class Millisecond {
+public final class Millisecond implements Serializable{
+
+	private static final long serialVersionUID = 6786921578531692049L;
 
 	public static Millisecond of(int m){
 		return new Millisecond(m);
