@@ -6,5 +6,7 @@ public enum QuestionType {
 	GroupWhat,
 	IndividualHow, 
 	IndividualWho,
-	IndividualWhat
+	IndividualWhat,
+	CoordinationWhat,
+	CoordinationWho
 }
