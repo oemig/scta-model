@@ -76,7 +76,7 @@ public class JAXBTraceModelTest extends TestCase{
 		m.addCountData(UserName.JEFF, "s", 11);
 		m.addCountData(UserName.TINA, "z", 44);
 		
-		m.save("c:\\Users\\christoph.oemig\\testrace.xml");
+		m.save("c:\\testrace.xml");
 	}
 	
 	public void testLoad()throws Exception{
