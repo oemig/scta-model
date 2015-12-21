@@ -68,16 +68,16 @@ public class JAXBTraceModelTest extends TestCase{
 	
 
 	
-	public void testSave()throws Exception{
-		m.addParticipant(UserName.JEFF, ExperiementId.TEST);
-		m.addParticipant(UserName.TINA, ExperiementId.TEST);
-		m.addResponseData(UserName.JEFF, true, Millisecond.of(100), QuestionType.GroupHow);
-		m.addResponseData(UserName.TINA, false, Millisecond.of(300), QuestionType.GroupWho);
-		m.addCountData(UserName.JEFF, "s", 11);
-		m.addCountData(UserName.TINA, "z", 44);
-		
-		m.save("c:\\testrace.xml");
-	}
+//	public void testSave()throws Exception{
+//		m.addParticipant(UserName.JEFF, ExperiementId.TEST);
+//		m.addParticipant(UserName.TINA, ExperiementId.TEST);
+//		m.addResponseData(UserName.JEFF, true, Millisecond.of(100), QuestionType.GroupHow);
+//		m.addResponseData(UserName.TINA, false, Millisecond.of(300), QuestionType.GroupWho);
+//		m.addCountData(UserName.JEFF, "s", 11);
+//		m.addCountData(UserName.TINA, "z", 44);
+//		
+//		m.save("c:\\testrace.xml");
+//	}
 	
 	public void testLoad()throws Exception{
 		ITraceModel lm=JAXBTraceModelImpl.builder().load(getClass().getClassLoader().getResourceAsStream("simpletrace.xml")).build();

@@ -1,5 +1,7 @@
 package net.oemig.scta.model.data;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -11,20 +13,25 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  * @author coemig@acm.org
  *
  */
-public class User {
+public class User implements Serializable {
 	
-	public static User of(String aName){
-		return new User(aName);
-	}
-
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String name;
 	
-	private User(String aName){
+	public User(String aName){
 		name=aName;
 	}
 	
 	public String getName(){
 		return name;
+	}
+	
+	public void setName(String aName){
+		name=aName;
 	}
 	
 	@Override
