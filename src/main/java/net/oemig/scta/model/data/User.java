@@ -22,6 +22,10 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String name;
 	
+	public User(){
+		name="?";
+	}
+	
 	public User(String aName){
 		name=aName;
 	}
